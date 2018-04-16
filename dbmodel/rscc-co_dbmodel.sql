@@ -1,9 +1,9 @@
 
--- --------------------------------------------------
+-- ---------------------------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
--- --------------------------------------------------
--- Date Created: 04/16/2018 12:44 v0.2
--- --------------------------------------------------
+-- ---------------------------------------------------------------------
+-- Date Created: 04/16/2018 12:44 v0.3
+-- ---------------------------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
 GO
@@ -15,7 +15,55 @@ GO
 -- --------------------------------------------------
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
+-- Droping foreign key constraint [om_id] in table 'rscc_log'
+ALTER TABLE [dbo].[rscc_log]
+  DROP CONSTRAINT [FK_LogOm];
+GO
 
+-- Droping foreign key constraint [site_id] in table 'rscc_om_cid'
+ALTER TABLE [dbo].[rscc_om_cid]
+  DROP CONSTRAINT [FK_CidSite];
+GO
+
+-- Droping foreign key constraint [cid_id] in table 'rscc_om_cid'
+ALTER TABLE [dbo].[rscc_om_cid]
+  DROP CONSTRAINT [FK_CidType];
+GO
+
+-- Droping foreign key constraint [requirement_id] in table 'rscc_om_cid'
+ALTER TABLE [dbo].[rscc_om_cid]
+  DROP CONSTRAINT [FK_RequirementType];
+GO
+
+-- Droping foreign key constraint [sitespecific_id] in table 'rscc_sitespecific'
+ALTER TABLE [dbo].[rscc_sitespecific]
+  DROP CONSTRAINT [FK_SitespecificSitetype];
+GO
+
+-- Droping foreign key constraint [nonsitespecific_id] in table 'rscc_nonsitespecific'
+ALTER TABLE [dbo].[rscc_nonsitespecific]
+  DROP CONSTRAINT [FK_NonsitespecificSitetype];
+GO
+
+-- Droping foreign key constraint [new_requirement_id] in table 'rscc_new_requirement'
+ALTER TABLE [dbo].[rscc_new_requirement]
+  DROP CONSTRAINT [FK_NewRequirementype];
+GO
+
+-- Droping foreign key constraint [revised_requirement_id] in table 'rscc_revised_requirement'
+ALTER TABLE [dbo].[rscc_revised_requirement]
+  DROP CONSTRAINT [FK_RevisedRequirementype];
+GO
+
+-- Droping foreign key constraint [hardwarecid_id] in table 'rscc_hardwarecid'
+ALTER TABLE [dbo].[rscc_hardwarecid]
+  DROP CONSTRAINT [FK_HardwareCidtype];
+GO
+
+-- Droping foreign key constraint [software_id] in table 'rscc_softwarecid'
+ALTER TABLE [dbo].[rscc_softwarecid]
+  DROP CONSTRAINT [FK_SoftwareCidtype];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -33,15 +81,28 @@ GO
 IF OBJECT_ID(N'[dbo].[rscc_nonsitespecific]', 'U') IS NOT NULL
   DROP TABLE [dbo].rscc_nonsitespecific;
 GO
+IF OBJECT_ID(N'[dbo].[rscc_hardwarecid]', 'U') IS NOT NULL
+  DROP TABLE [dbo].rscc_hardwarecid;
+GO
+IF OBJECT_ID(N'[dbo].[rscc_softwarecid]', 'U') IS NOT NULL
+  DROP TABLE [dbo].rscc_softwarecid;
+GO
 IF OBJECT_ID(N'[dbo].[rscc_sitetype]', 'U') IS NOT NULL
   DROP TABLE [dbo].rscc_sitetype;
 GO
 IF OBJECT_ID(N'[dbo].[rscc_cidtype]', 'U') IS NOT NULL
   DROP TABLE [dbo].[rscc_cidtype];
 GO
+IF OBJECT_ID(N'[dbo].[rscc_new_requirement]', 'U') IS NOT NULL
+  DROP TABLE [dbo].[rscc_new_requirement];
+GO
+IF OBJECT_ID(N'[dbo].[rscc_revised_requirement]', 'U') IS NOT NULL
+  DROP TABLE [dbo].[rscc_revised_requirement];
+GO
 IF OBJECT_ID(N'[dbo].[rscc_requirementtype]', 'U') IS NOT NULL
   DROP TABLE [dbo].[rscc_requirementtype];
 GO
+
 -- --------------------------------------------------
 -- Creating all tables
 -- --------------------------------------------------
@@ -53,10 +114,34 @@ CREATE TABLE [dbo].[rscc_cidtype] (
 );
 GO
 
+-- Creating table 'rscc_hardware_cid'
+CREATE TABLE [dbo].[rscc_hardwarecid] (
+  [hardwarecid_id] int NOT NULL
+);
+GO
+
+-- Creating table 'rscc_softwarecid'
+CREATE TABLE [dbo].[rscc_softwarecid] (
+  [softwarecid_id] int NOT NULL
+);
+GO
+
 -- Creating table 'rscc_requirementtype'
 CREATE TABLE [dbo].[rscc_requirementtype] (
   [requirementtype_id] int IDENTITY(1,1) NOT NULL,
   [requirement_type] nchar(20) NOT NULL
+);
+GO
+
+-- Creating table 'rscc_new_requirement'
+CREATE TABLE [dbo].[rscc_new_requirement] (
+  [new_requirement_id] int NOT NULL
+);
+GO
+
+-- Creating table 'rscc_revised_requirement'
+CREATE TABLE [dbo].[rscc_revised_requirement] (
+  [revised_requirement_id] int NOT NULL
 );
 GO
 
@@ -79,6 +164,7 @@ CREATE TABLE [dbo].[rscc_nonsitespecific] (
   [nonsitespecific_id] int NOT NULL
 );
 GO
+
 -- Creating table 'rscc_om_cid'
 CREATE TABLE [dbo].[rscc_om_cid] (
   [om_id] int IDENTITY(1,1) NOT NULL,
@@ -125,6 +211,18 @@ ALTER TABLE [dbo].[rscc_cidtype]
 PRIMARY KEY CLUSTERED ([cidtype_id] ASC);
 GO
 
+-- Creating primary key on [new_requirement_id] in table 'rscc_new_requirement'
+ALTER TABLE [dbo].rscc_new_requirement
+  ADD CONSTRAINT [PK_rscc_new_requirement]
+PRIMARY KEY CLUSTERED ([new_requirement_id] ASC);
+GO
+
+-- Creating primary key on [revised_requirement_id] in table 'rscc_revised_requirement'
+ALTER TABLE [dbo].rscc_revised_requirement
+  ADD CONSTRAINT [PK_rscc_revised_requirement]
+PRIMARY KEY CLUSTERED ([revised_requirement_id] ASC);
+GO
+
 -- Creating primary key on [requirementtype_cid] in table 'rscc_requirementtype'
 ALTER TABLE [dbo].[rscc_requirementtype]
   ADD CONSTRAINT [PK_rscc_requirementtype]
@@ -141,6 +239,18 @@ GO
 ALTER TABLE [dbo].rscc_nonsitespecific
   ADD CONSTRAINT [PK_rscc_nonsitespecific]
 PRIMARY KEY CLUSTERED ([nonsitespecific_id] ASC);
+GO
+
+-- Creating primary key on [hardwarecid_id] in table 'rscc_hardwarecid'
+ALTER TABLE [dbo].rscc_hardwarecid
+  ADD CONSTRAINT [PK_rscc_hardwarecid]
+PRIMARY KEY CLUSTERED ([hardwarecid_id] ASC);
+GO
+
+-- Creating primary key on [rscc_softwarecid_id] in table 'rscc_softwarecid'
+ALTER TABLE [dbo].rscc_softwarecid
+  ADD CONSTRAINT [PK_rscc_softwarecid]
+PRIMARY KEY CLUSTERED ([softwarecid_id] ASC);
 GO
 
 -- Creating primary key on [sitetype_id] in table 'rscc_sitetype'
@@ -209,6 +319,30 @@ GO
 ALTER TABLE [dbo].rscc_nonsitespecific
   ADD CONSTRAINT [FK_NonsitespecificSitetype]
 FOREIGN KEY ([nonsitespecific_id]) REFERENCES [dbo].rscc_sitetype(sitetype_id);
+GO
+
+-- Creating foreign key constraint [new_requirement_id] in table 'rscc_new_requirement'
+ALTER TABLE [dbo].rscc_new_requirement
+  ADD CONSTRAINT [FK_NewRequirementype]
+FOREIGN KEY ([new_requirement_id]) REFERENCES [dbo].rscc_requirementtype(requirementtype_id);
+GO
+
+-- Creating foreign key constraint [revised_requirement_id] in table 'rscc_revised_requirement'
+ALTER TABLE [dbo].rscc_revised_requirement
+  ADD CONSTRAINT [FK_RevisedRequirementype]
+FOREIGN KEY ([revised_requirement_id]) REFERENCES [dbo].rscc_requirementtype(requirementtype_id);
+GO
+
+-- Creating foreign key constraint [hardwarecid_id] in table 'rscc_hardwarecid'
+ALTER TABLE [dbo].rscc_hardwarecid
+  ADD CONSTRAINT [FK_HardwareCidtype]
+FOREIGN KEY ([hardwarecid_id]) REFERENCES [dbo].rscc_cidtype(cidtype_id);
+GO
+
+-- Creating foreign key constraint [software_id] in table 'rscc_softwarecid'
+ALTER TABLE [dbo].rscc_softwarecid
+  ADD CONSTRAINT [FK_SoftwareCidtype]
+FOREIGN KEY ([softwarecid_id]) REFERENCES [dbo].rscc_cidtype(cidtype_id);
 GO
 
 -- --------------------------------------------------
