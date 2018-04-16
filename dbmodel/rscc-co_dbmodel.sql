@@ -2,7 +2,7 @@
 -- ---------------------------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- ---------------------------------------------------------------------
--- Date Created: 04/16/2018 12:44 v0.3
+-- Date Created: 04/16/2018 18:00 v0.5
 -- ---------------------------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -16,64 +16,92 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 -- Droping foreign key constraint [om_id] in table 'rscc_log'
-ALTER TABLE [dbo].[rscc_log]
-  DROP CONSTRAINT [FK_LogOm];
+IF OBJECT_ID(N'[dbo].[FK_LogOm]', 'U') IS NOT NULL
+  ALTER TABLE [dbo].[rscc_log]
+    DROP CONSTRAINT [FK_LogOm];
 GO
 
 -- Droping foreign key constraint [site_id] in table 'rscc_om_cid'
+IF OBJECT_ID(N'[dbo].[FK_CidSite]', 'U') IS NOT NULL
 ALTER TABLE [dbo].[rscc_om_cid]
   DROP CONSTRAINT [FK_CidSite];
 GO
 
+-- Droping foreign key constraint [model_id] in table 'rscc_om_cid'
+IF OBJECT_ID(N'[dbo].[FK_CidModel]', 'U') IS NOT NULL
+ALTER TABLE [dbo].[rscc_om_cid]
+  DROP CONSTRAINT [FK_CidModel];
+GO
+
 -- Droping foreign key constraint [cid_id] in table 'rscc_om_cid'
+IF OBJECT_ID(N'[dbo].[FK_CidType]', 'U') IS NOT NULL
 ALTER TABLE [dbo].[rscc_om_cid]
   DROP CONSTRAINT [FK_CidType];
 GO
 
 -- Droping foreign key constraint [requirement_id] in table 'rscc_om_cid'
+IF OBJECT_ID(N'[dbo].[FK_RequirementType]', 'U') IS NOT NULL
 ALTER TABLE [dbo].[rscc_om_cid]
   DROP CONSTRAINT [FK_RequirementType];
 GO
 
+-- Droping foreign key constraint [customer_account_number] in table 'rscc_om_cid'
+IF OBJECT_ID(N'[dbo].[FK_CidCustomerNumber]', 'U') IS NOT NULL
+  ALTER TABLE [dbo].[rscc_om_cid]
+    DROP CONSTRAINT [FK_CidCustomerNumber];
+GO
+
 -- Droping foreign key constraint [sitespecific_id] in table 'rscc_sitespecific'
+IF OBJECT_ID(N'[dbo].[FK_SitespecificSitetype]', 'U') IS NOT NULL
 ALTER TABLE [dbo].[rscc_sitespecific]
   DROP CONSTRAINT [FK_SitespecificSitetype];
 GO
 
 -- Droping foreign key constraint [nonsitespecific_id] in table 'rscc_nonsitespecific'
+IF OBJECT_ID(N'[dbo].[FK_NonsitespecificSitetype]', 'U') IS NOT NULL
 ALTER TABLE [dbo].[rscc_nonsitespecific]
   DROP CONSTRAINT [FK_NonsitespecificSitetype];
 GO
 
 -- Droping foreign key constraint [new_requirement_id] in table 'rscc_new_requirement'
+IF OBJECT_ID(N'[dbo].[FK_NewRequirementype]', 'U') IS NOT NULL
 ALTER TABLE [dbo].[rscc_new_requirement]
   DROP CONSTRAINT [FK_NewRequirementype];
 GO
 
 -- Droping foreign key constraint [revised_requirement_id] in table 'rscc_revised_requirement'
+IF OBJECT_ID(N'[dbo].[FK_RevisedRequirementype]', 'U') IS NOT NULL
 ALTER TABLE [dbo].[rscc_revised_requirement]
   DROP CONSTRAINT [FK_RevisedRequirementype];
 GO
 
 -- Droping foreign key constraint [hardwarecid_id] in table 'rscc_hardwarecid'
+IF OBJECT_ID(N'[dbo].[FK_HardwareCidtype]', 'U') IS NOT NULL
 ALTER TABLE [dbo].[rscc_hardwarecid]
   DROP CONSTRAINT [FK_HardwareCidtype];
 GO
 
 -- Droping foreign key constraint [software_id] in table 'rscc_softwarecid'
+IF OBJECT_ID(N'[dbo].[FK_SoftwareCidtype]', 'U') IS NOT NULL
 ALTER TABLE [dbo].[rscc_softwarecid]
   DROP CONSTRAINT [FK_SoftwareCidtype];
 GO
 
+
 -- --------------------------------------------------
 -- Dropping existing tables
 -- --------------------------------------------------
-
+IF OBJECT_ID(N'[dbo].[rscc_customer]', 'U') IS NOT NULL
+  DROP TABLE [dbo].[rscc_customer];
+GO
 IF OBJECT_ID(N'[dbo].[rscc_log]', 'U') IS NOT NULL
   DROP TABLE [dbo].[rscc_log];
 GO
 IF OBJECT_ID(N'[dbo].[rscc_om_cid]', 'U') IS NOT NULL
   DROP TABLE [dbo].[rscc_om_cid];
+GO
+IF OBJECT_ID(N'[dbo].[rscc_model]', 'U') IS NOT NULL
+  DROP TABLE [dbo].[rscc_model];
 GO
 IF OBJECT_ID(N'[dbo].[rscc_sitespecific]', 'U') IS NOT NULL
   DROP TABLE [dbo].rscc_sitespecific;
@@ -106,6 +134,19 @@ GO
 -- --------------------------------------------------
 -- Creating all tables
 -- --------------------------------------------------
+
+-- Creating table 'rscc_model'
+CREATE TABLE [dbo].[rscc_customer] (
+  [customer_account_number] int NOT NULL,
+  [customer_name] nchar(200)
+);
+GO
+
+-- Creating table 'rscc_model'
+CREATE TABLE [dbo].[rscc_model] (
+  [model_id] int IDENTITY(1,1) NOT NULL
+);
+GO
 
 -- Creating table 'rscc_cidtype'
 CREATE TABLE [dbo].[rscc_cidtype] (
@@ -170,6 +211,8 @@ CREATE TABLE [dbo].[rscc_om_cid] (
   [om_id] int IDENTITY(1,1) NOT NULL,
   [new_cid] nchar(100)  NULL,
   [old_cid] nchar(100)  NULL,
+  [model_id] int NOT NULL,
+  [customer_account_number] int NOT NULL,
   [soa_instance_id] nchar(100) NULL,
   [order_number] nchar(100)  NULL,
   [order_line_number] nchar(100)  NULL,
@@ -204,6 +247,18 @@ GO
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
+
+-- Creating primary key on [model_id] in table 'rscc_model'
+ALTER TABLE [dbo].[rscc_customer]
+  ADD CONSTRAINT [PK_rscc_customer]
+PRIMARY KEY CLUSTERED ([customer_account_number] ASC);
+GO
+
+-- Creating primary key on [model_id] in table 'rscc_model'
+ALTER TABLE [dbo].[rscc_model]
+  ADD CONSTRAINT [PK_rscc_model]
+PRIMARY KEY CLUSTERED ([model_id] ASC);
+GO
 
 -- Creating primary key on [cidtype_cid] in table 'rscc_cidtype'
 ALTER TABLE [dbo].[rscc_cidtype]
@@ -284,6 +339,18 @@ GO
 -- --------------------------------------------------
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
+
+-- Creating foreign key constraint [customer_account_number] in table 'rscc_om_cid'
+ALTER TABLE [dbo].[rscc_om_cid]
+  ADD CONSTRAINT [FK_CidCustomerNumber]
+FOREIGN KEY ([customer_account_number]) REFERENCES [dbo].[rscc_customer](customer_account_number);
+GO
+
+-- Creating foreign key constraint [model_id] in table 'rscc_om_cid'
+ALTER TABLE [dbo].[rscc_om_cid]
+  ADD CONSTRAINT [FK_CidTModel]
+FOREIGN KEY ([model_id]) REFERENCES [dbo].[rscc_model](model_id);
+GO
 
 -- Creating foreign key constraint [om_id] in table 'rscc_log'
 ALTER TABLE [dbo].[rscc_log]
