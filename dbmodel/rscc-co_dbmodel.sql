@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/13/2018 23:14:26
+-- Date Created: 04/16/2018 12:44 v0.2
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -21,17 +21,20 @@ GO
 -- Dropping existing tables
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[rscc_logSet]', 'U') IS NOT NULL
-  DROP TABLE [dbo].[rscc_logSet];
+IF OBJECT_ID(N'[dbo].[rscc_log]', 'U') IS NOT NULL
+  DROP TABLE [dbo].[rscc_log];
 GO
-IF OBJECT_ID(N'[dbo].[rscc_om_cidSet]', 'U') IS NOT NULL
-  DROP TABLE [dbo].[rscc_om_cidSet];
+IF OBJECT_ID(N'[dbo].[rscc_om_cid]', 'U') IS NOT NULL
+  DROP TABLE [dbo].[rscc_om_cid];
 GO
-IF OBJECT_ID(N'[dbo].[rscc_site]', 'U') IS NOT NULL
-  DROP TABLE [dbo].[rscc_site];
+IF OBJECT_ID(N'[dbo].[rscc_sitespecific]', 'U') IS NOT NULL
+  DROP TABLE [dbo].rscc_sitespecific;
+GO
+IF OBJECT_ID(N'[dbo].[rscc_nonsitespecific]', 'U') IS NOT NULL
+  DROP TABLE [dbo].rscc_nonsitespecific;
 GO
 IF OBJECT_ID(N'[dbo].[rscc_sitetype]', 'U') IS NOT NULL
-  DROP TABLE [dbo].[rscc_sitetype];
+  DROP TABLE [dbo].rscc_sitetype;
 GO
 IF OBJECT_ID(N'[dbo].[rscc_cidtype]', 'U') IS NOT NULL
   DROP TABLE [dbo].[rscc_cidtype];
@@ -64,16 +67,20 @@ CREATE TABLE [dbo].[rscc_sitetype] (
 );
 GO
 
--- Creating table 'rscc_site'
-CREATE TABLE [dbo].[rscc_site] (
-  [site_id] int IDENTITY(1,1) NOT NULL,
-  [sitetype_id] int NOT NULL,
+-- Creating table 'rscc_sitespecific'
+CREATE TABLE [dbo].[rscc_sitespecific] (
+  [sitespecific_id] int NOT NULL,
   [ship_to_address] nchar(250) NULL
 );
 GO
 
--- Creating table 'rscc_om_cidSet'
-CREATE TABLE [dbo].[rscc_om_cidSet] (
+-- Creating table 'rscc_nonsitespecific'
+CREATE TABLE [dbo].[rscc_nonsitespecific] (
+  [nonsitespecific_id] int NOT NULL
+);
+GO
+-- Creating table 'rscc_om_cid'
+CREATE TABLE [dbo].[rscc_om_cid] (
   [om_id] int IDENTITY(1,1) NOT NULL,
   [new_cid] nchar(100)  NULL,
   [old_cid] nchar(100)  NULL,
@@ -86,7 +93,7 @@ CREATE TABLE [dbo].[rscc_om_cidSet] (
   [expiration_reason] nvarchar(max) NULL,
   [created_date] datetime NULL,
   [updated_date] datetime NULL,
-  [site_id] int NOT NULL,
+  [sitetype_id] int NOT NULL,
   [cid_id] int NOT NULL,
   [requirement_id] int NOT NULL,
   [order_comments] nvarchar(max) NULL,
@@ -97,8 +104,8 @@ CREATE TABLE [dbo].[rscc_om_cidSet] (
 );
 GO
 
--- Creating table 'rscc_logSet'
-CREATE TABLE [dbo].[rscc_logSet] (
+-- Creating table 'rscc_log'
+CREATE TABLE [dbo].[rscc_log] (
   [log_id] int IDENTITY(1,1) NOT NULL,
   [om_id] int NOT NULL,
   [code] nchar(100)  NULL,
@@ -121,30 +128,36 @@ GO
 -- Creating primary key on [requirementtype_cid] in table 'rscc_requirementtype'
 ALTER TABLE [dbo].[rscc_requirementtype]
   ADD CONSTRAINT [PK_rscc_requirementtype]
-PRIMARY KEY CLUSTERED ([requirementtype_id] ASC);
+  PRIMARY KEY CLUSTERED ([requirementtype_id] ASC);
 GO
 
--- Creating primary key on [sitetype_cid] in table 'rscc_sitetype'
-ALTER TABLE [dbo].[rscc_sitetype]
+-- Creating primary key on [sitespecific_id] in table 'rscc_sitespecific'
+ALTER TABLE [dbo].rscc_sitespecific
+  ADD CONSTRAINT [PK_rscc_sitespecific]
+  PRIMARY KEY CLUSTERED ([sitespecific_id] ASC);
+GO
+
+-- Creating primary key on [nonsitespecific_id] in table 'rscc_nonsitespecific'
+ALTER TABLE [dbo].rscc_nonsitespecific
+  ADD CONSTRAINT [PK_rscc_nonsitespecific]
+PRIMARY KEY CLUSTERED ([nonsitespecific_id] ASC);
+GO
+
+-- Creating primary key on [sitetype_id] in table 'rscc_sitetype'
+ALTER TABLE [dbo].rscc_sitetype
   ADD CONSTRAINT [PK_rscc_sitetype]
-PRIMARY KEY CLUSTERED ([sitetype_id] ASC);
+  PRIMARY KEY CLUSTERED ([sitetype_id] ASC);
 GO
 
--- Creating primary key on [site_cid] in table 'rscc_site'
-ALTER TABLE [dbo].[rscc_site]
-  ADD CONSTRAINT [PK_rscc_site]
-PRIMARY KEY CLUSTERED ([site_id] ASC);
-GO
-
--- Creating primary key on [om_cid] in table 'rscc_om_cidSet'
-ALTER TABLE [dbo].[rscc_om_cidSet]
-  ADD CONSTRAINT [PK_rscc_om_cidSet]
+-- Creating primary key on [om_cid] in table 'rscc_om_cid'
+ALTER TABLE [dbo].[rscc_om_cid]
+  ADD CONSTRAINT [PK_rscc_om_cid]
 PRIMARY KEY CLUSTERED ([om_id] ASC);
 GO
 
--- Creating primary key on [log_id] in table 'rscc_logSet'
-ALTER TABLE [dbo].[rscc_logSet]
-  ADD CONSTRAINT [PK_rscc_logSet]
+-- Creating primary key on [log_id] in table 'rscc_log'
+ALTER TABLE [dbo].[rscc_log]
+  ADD CONSTRAINT [PK_rscc_log]
 PRIMARY KEY CLUSTERED ([log_id] ASC);
 GO
 
@@ -152,8 +165,8 @@ GO
 -- Creating all JSON constraints
 -- --------------------------------------------------
 
--- Creating JSON constraint on [payload] in table 'rscc_logSet'
-ALTER TABLE [dbo].[rscc_logSet]
+-- Creating JSON constraint on [payload] in table 'rscc_log'
+ALTER TABLE [dbo].[rscc_log]
   ADD CONSTRAINT [payload record should be formatted as JSON]
 CHECK (ISJSON(payload)=1);
 GO
@@ -162,41 +175,48 @@ GO
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
 
--- Creating foreign key constraint [om_id] in table 'rscc_logSet'
-ALTER TABLE [dbo].[rscc_logSet]
+-- Creating foreign key constraint [om_id] in table 'rscc_log'
+ALTER TABLE [dbo].[rscc_log]
   ADD CONSTRAINT [FK_LogOm]
-FOREIGN KEY ([om_id]) REFERENCES [dbo].[rscc_om_cidSet](om_id);
+FOREIGN KEY ([om_id]) REFERENCES [dbo].[rscc_om_cid](om_id);
 GO
 
--- Creating foreign key constraint [site_id] in table 'rscc_om_cidSet'
-ALTER TABLE [dbo].[rscc_om_cidSet]
+-- Creating foreign key constraint [site_id] in table 'rscc_om_cid'
+ALTER TABLE [dbo].[rscc_om_cid]
   ADD CONSTRAINT [FK_CidSite]
-FOREIGN KEY ([site_id]) REFERENCES [dbo].[rscc_site](site_id);
+FOREIGN KEY ([sitetype_id]) REFERENCES [dbo].rscc_sitetype(sitetype_id);
 GO
 
--- Creating foreign key constraint [cid_id] in table 'rscc_om_cidSet'
-ALTER TABLE [dbo].[rscc_om_cidSet]
+-- Creating foreign key constraint [cid_id] in table 'rscc_om_cid'
+ALTER TABLE [dbo].[rscc_om_cid]
   ADD CONSTRAINT [FK_CidType]
 FOREIGN KEY ([cid_id]) REFERENCES [dbo].[rscc_cidtype](cidtype_id);
 GO
 
--- Creating foreign key constraint [requirement_id] in table 'rscc_om_cidSet'
-ALTER TABLE [dbo].[rscc_om_cidSet]
+-- Creating foreign key constraint [requirement_id] in table 'rscc_om_cid'
+ALTER TABLE [dbo].[rscc_om_cid]
   ADD CONSTRAINT [FK_RequirementType]
 FOREIGN KEY ([requirement_id]) REFERENCES [dbo].[rscc_requirementtype](requirementtype_id);
 GO
 
--- Creating foreign key constraint [sitetype_cid] in table 'rscc_site'
-ALTER TABLE [dbo].[rscc_site]
-  ADD CONSTRAINT [FK_SiteType]
-FOREIGN KEY ([sitetype_id]) REFERENCES [dbo].[rscc_sitetype](sitetype_id);
+-- Creating foreign key constraint [sitespecific_id] in table 'rscc_sitespecific'
+ALTER TABLE [dbo].rscc_sitespecific
+  ADD CONSTRAINT [FK_SitespecificSitetype]
+  FOREIGN KEY ([sitespecific_id]) REFERENCES [dbo].rscc_sitetype(sitetype_id);
 GO
+
+-- Creating foreign key constraint [nonsitespecific_id] in table 'rscc_nonsitespecific'
+ALTER TABLE [dbo].rscc_nonsitespecific
+  ADD CONSTRAINT [FK_NonsitespecificSitetype]
+FOREIGN KEY ([nonsitespecific_id]) REFERENCES [dbo].rscc_sitetype(sitetype_id);
+GO
+
 -- --------------------------------------------------
 -- Creating all other column constraints
 -- --------------------------------------------------
 
--- Creating check constraint [priority] in table 'rscc_om_cidSet'
-ALTER TABLE [dbo].[rscc_om_cidSet]
+-- Creating check constraint [priority] in table 'rscc_om_cid'
+ALTER TABLE [dbo].[rscc_om_cid]
   ADD CONSTRAINT [CHK_priority]
 CHECK ([priority] in ('high','medium','low'));
 GO
