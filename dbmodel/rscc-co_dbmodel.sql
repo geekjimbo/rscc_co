@@ -13,8 +13,16 @@ IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
 GO
 
 -- --------------------------------------------------
+-- Dropping existing STORED PROCEDURES
+-- --------------------------------------------------
+
+DROP PROCEDURE [dbo].[setFullCid];
+GO
+
+-- --------------------------------------------------
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
+
 -- Droping foreign key constraint [om_id] in table 'rscc_log'
 IF OBJECT_ID(N'[dbo].[FK_LogOm]', 'U') IS NOT NULL
   ALTER TABLE [dbo].[rscc_log]
@@ -91,9 +99,6 @@ GO
 -- --------------------------------------------------
 -- Dropping existing tables
 -- --------------------------------------------------
-IF OBJECT_ID(N'[dbo].[rscc_customer]', 'U') IS NOT NULL
-  DROP TABLE [dbo].[rscc_customer];
-GO
 IF OBJECT_ID(N'[dbo].[rscc_log]', 'U') IS NOT NULL
   DROP TABLE [dbo].[rscc_log];
 GO
@@ -130,12 +135,14 @@ GO
 IF OBJECT_ID(N'[dbo].[rscc_requirementtype]', 'U') IS NOT NULL
   DROP TABLE [dbo].[rscc_requirementtype];
 GO
-
+IF OBJECT_ID(N'[dbo].[rscc_customer]', 'U') IS NOT NULL
+  DROP TABLE [dbo].[rscc_customer];
+GO
 -- --------------------------------------------------
 -- Creating all tables
 -- --------------------------------------------------
 
--- Creating table 'rscc_model'
+-- Creating table 'rscc_customer'
 CREATE TABLE [dbo].[rscc_customer] (
   [customer_account_number] int NOT NULL,
   [customer_name] nchar(200)
@@ -144,7 +151,8 @@ GO
 
 -- Creating table 'rscc_model'
 CREATE TABLE [dbo].[rscc_model] (
-  [model_id] int IDENTITY(1,1) NOT NULL
+  [model_id] int IDENTITY(1,1) NOT NULL,
+  [model] nchar(200) NOT NULL
 );
 GO
 
@@ -248,7 +256,7 @@ GO
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
 
--- Creating primary key on [model_id] in table 'rscc_model'
+-- Creating primary key on [customer_account_number] in table 'rscc_customer'
 ALTER TABLE [dbo].[rscc_customer]
   ADD CONSTRAINT [PK_rscc_customer]
 PRIMARY KEY CLUSTERED ([customer_account_number] ASC);
@@ -348,7 +356,7 @@ GO
 
 -- Creating foreign key constraint [model_id] in table 'rscc_om_cid'
 ALTER TABLE [dbo].[rscc_om_cid]
-  ADD CONSTRAINT [FK_CidTModel]
+  ADD CONSTRAINT [FK_CidModel]
 FOREIGN KEY ([model_id]) REFERENCES [dbo].[rscc_model](model_id);
 GO
 
@@ -439,6 +447,49 @@ ALTER TABLE [dbo].[rscc_requirementtype]
   ADD CONSTRAINT [CHK_requirementtype]
 CHECK ([requirement_type] in ('new requirement','revised requirement'));
 GO
+
+-- --------------------------------------------------
+-- Create stored procedures
+-- --------------------------------------------------
+
+CREATE PROCEDURE [dbo].[setFullCid]
+
+  @customer_account_number int,
+  @customer_name nchar(200),
+  @ship_to_address nchar(250),
+  @model nchar(200),
+  @old_cid nchar(100),
+  @new_cid nchar(100),
+  @soa_instance_id nchar(200),
+  @order_number nchar(100),
+  @order_line_number nchar(100),
+  @solution nvarchar(max),
+  @field_config nchar(100),
+  @expiration_date datetime,
+  @expiration_reason nvarchar(max),
+  @created_date datetime,
+  @updated_date datetime,
+  @site_type nchar(20),
+  @site_id int,
+  @cid_type nchar(20),
+  @cid_id int,
+  @requirement_type nchar(20),
+  @requirement_id int,
+  @order_comments nvarchar(max),
+  @priority nchar(10),
+  @expected_completion_date datetime
+AS
+  DECLARE
+    @model_id int
+BEGIN
+  INSERT INTO [dbo].[rscc_customer] (customer_account_number, customer_name)
+    VALUES ( @customer_account_number, @customer_name );
+  INSERT INTO [dbo].[rscc_model] (model) VALUES ( @model );
+  SET @model_id = SCOPE_IDENTITY();
+
+END
+GO
+
 
 -- --------------------------------------------------
 -- Script has ended
