@@ -3,76 +3,77 @@
   <ID>DATABASE</ID>
   <OriginalElement>fb99beda-5b59-40f1-b4f0-f44fca94a745.DATABASE:rscc-co</OriginalElement>
   <nodes>
-    <node x="200.0" y="520.0">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_cidtype</node>
-    <node x="254.0" y="52.5">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_revised_requirement</node>
-    <node x="853.5" y="80.0">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_sitespecific</node>
-    <node x="199.0" y="412.5">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_hardwarecid</node>
-    <node x="306.5" y="952.0">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_log</node>
-    <node x="882.0" y="520.0">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_model</node>
-    <node x="251.0" y="160.0">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_requirementtype</node>
-    <node x="590.5" y="-27.5">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_nonsitespecific</node>
-    <node x="598.0" y="80.0">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_sitetype</node>
-    <node x="563.5" y="880.0">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_customer</node>
-    <node x="-16.5" y="172.5">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_new_requirement</node>
-    <node x="545.5" y="280.0">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_om_cid</node>
-    <node x="1.0" y="532.5">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_softwarecid</node>
+    <node x="322.0" y="0.0">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_model</node>
+    <node x="-13.5" y="632.0">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_log</node>
+    <node x="879.0" y="332.5">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_hardwarecid</node>
+    <node x="638.0" y="680.0">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_sitetype</node>
+    <node x="613.5" y="800.0">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_sitespecific</node>
+    <node x="614.0" y="212.5">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_revised_requirement</node>
+    <node x="903.5" y="92.5">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_new_requirement</node>
+    <node x="641.0" y="452.5">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_softwarecid</node>
+    <node x="283.5" y="1040.0">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_customer</node>
+    <node x="640.0" y="320.0">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_cidtype</node>
+    <node x="1145.5" y="-7.5">fb99beda-5b59-40f1-b4f0-f44fca94a745.VIEW:rscc-co.dbo.view_co</node>
+    <node x="265.5" y="440.0">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_om_cid</node>
+    <node x="910.5" y="692.5">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_nonsitespecific</node>
+    <node x="611.0" y="80.0">fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_requirementtype</node>
   </nodes>
   <notes />
   <edges>
     <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_hardwarecid" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_cidtype">
-      <point x="0.0" y="27.5" />
-      <point x="0.0" y="-40.0" />
-    </edge>
-    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_revised_requirement" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_requirementtype">
-      <point x="0.0" y="27.5" />
-      <point x="0.0" y="-40.0" />
-    </edge>
-    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_om_cid" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_cidtype">
-      <point x="-134.5" y="0.0" />
+      <point x="-81.0" y="0.0" />
       <point x="80.0" y="0.0" />
     </edge>
-    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_new_requirement" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_requirementtype">
-      <point x="96.5" y="0.0" />
-      <point x="-109.0" y="0.0" />
+    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_revised_requirement" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_requirementtype">
+      <point x="0.0" y="-27.5" />
+      <point x="0.0" y="40.0" />
     </edge>
-    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_log" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_om_cid">
-      <point x="0.0" y="-88.0" />
-      <point x="400.0" y="600.0" />
-      <point x="-134.5" y="40.0" />
-    </edge>
-    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_softwarecid" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_cidtype">
-      <point x="79.0" y="0.0" />
+    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_om_cid" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_cidtype">
+      <point x="80.0" y="-280.0" />
+      <point x="480.0" y="360.0" />
       <point x="-80.0" y="0.0" />
     </edge>
-    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_om_cid" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_model">
-      <point x="134.5" y="0.0" />
-      <point x="-78.0" y="0.0" />
-    </edge>
-    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_nonsitespecific" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_sitetype">
-      <point x="0.0" y="27.5" />
-      <point x="0.0" y="-40.0" />
-    </edge>
-    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_om_cid" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_requirementtype">
-      <point x="-40.0" y="-280.0" />
-      <point x="640.0" y="200.0" />
+    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_new_requirement" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_requirementtype">
+      <point x="-96.5" y="0.0" />
       <point x="109.0" y="0.0" />
     </edge>
-    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_sitespecific" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_sitetype">
-      <point x="-106.5" y="0.0" />
-      <point x="82.0" y="0.0" />
+    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_log" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_om_cid">
+      <point x="93.5" y="0.0" />
+      <point x="-134.5" y="0.0" />
     </edge>
-    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_om_cid" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_sitetype">
+    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_softwarecid" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_cidtype">
+      <point x="0.0" y="-27.5" />
+      <point x="0.0" y="40.0" />
+    </edge>
+    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_om_cid" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_model">
       <point x="0.0" y="-280.0" />
       <point x="0.0" y="40.0" />
+    </edge>
+    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_nonsitespecific" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_sitetype">
+      <point x="-89.5" y="0.0" />
+      <point x="82.0" y="0.0" />
+    </edge>
+    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_om_cid" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_requirementtype">
+      <point x="40.0" y="-280.0" />
+      <point x="440.0" y="120.0" />
+      <point x="-109.0" y="0.0" />
+    </edge>
+    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_sitespecific" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_sitetype">
+      <point x="0.0" y="-40.0" />
+      <point x="0.0" y="40.0" />
+    </edge>
+    <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_om_cid" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_sitetype">
+      <point x="134.5" y="0.0" />
+      <point x="-82.0" y="0.0" />
     </edge>
     <edge source="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_om_cid" target="fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_customer">
       <point x="0.0" y="280.0" />
       <point x="0.0" y="-40.0" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="1.0280701754385964" x="509.73720136518773" y="866.4027303754267" />
+  <settings layout="Hierarchic Group" zoom="1.0280701754385964" x="687.7372013651877" y="954.4027303754267" />
   <SelectedNodes>
-    <node>fb99beda-5b59-40f1-b4f0-f44fca94a745.TABLE:rscc-co.dbo.rscc_cidtype</node>
+    <node>fb99beda-5b59-40f1-b4f0-f44fca94a745.VIEW:rscc-co.dbo.view_co</node>
   </SelectedNodes>
   <Categories>
     <Category>Columns</Category>

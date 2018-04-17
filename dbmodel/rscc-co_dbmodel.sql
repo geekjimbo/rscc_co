@@ -2,7 +2,7 @@
 -- ---------------------------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- ---------------------------------------------------------------------
--- Date Created: 04/16/2018 22:450 v0.7
+-- Date Created: 04/16/2018 22:450 v0.8
 -- ---------------------------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -10,13 +10,6 @@ GO
 USE [rscc-co];
 GO
 IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
-GO
-
--- --------------------------------------------------
--- Dropping existing STORED PROCEDURES
--- --------------------------------------------------
-DROP FUNCTION [dbo].[str_to_datetime];
-DROP PROCEDURE [dbo].[setFullCid];
 GO
 
 -- --------------------------------------------------
@@ -455,18 +448,17 @@ GO
 -- GO
 
 -- Function to convert string ("Fri Apr 10 1992 02:55:34 GMT+0000 (UTC)") to datetime
-CREATE FUNCTION [dbo].[str_to_datetime] (@strdate nchar(50))
+CREATE OR ALTER FUNCTION [dbo].[str_to_datetime] (@strdate nchar(50))
 RETURNS datetime
 WITH EXECUTE AS CALLER
 AS
 BEGIN
-
-  RETURN(SYSDATETIME());
+  RETURN(CAST(SUBSTRING(@strdate,5,20) AS datetime) AT TIME ZONE 'UTC');
 END
 GO
 
 -- Procedure to fill tables with data dump
-CREATE PROCEDURE [dbo].[setFullCid]
+CREATE OR ALTER PROCEDURE [dbo].[setFullCid]
 
   @customer_account_number int,
   @customer_name nchar(200),
@@ -570,6 +562,24 @@ BEGIN
    @requirement_id, @order_comments, @priority,
     [dbo].[str_to_datetime](@expected_completion_date), '', '');
 END
+GO
+
+-- View to retrieve data from all CO tables
+CREATE OR ALTER VIEW view_co AS
+select customer.customer_account_number, customer.customer_name, sspec.ship_to_address,
+  model.model, om.old_cid, om.new_cid, om.soa_instance_id, om.order_number, om.order_line_number,
+  om.solution, om.field_config, om.expiration_date, om.expiration_reason, om.created_date,
+  om.updated_date, om.iface_status, om.iface_message, site.site_type, site.sitetype_id as site_id,
+  ct.cid_type, ct.cidtype_id as cid_id, req.requirement_type,
+  req.requirementtype_id as requirement_id, om.order_comments, om.priority,
+  om.expected_completion_date
+from rscc_om_cid om
+LEFT JOIN rscc_sitetype site ON om.sitetype_id = site.sitetype_id
+FULL OUTER JOIN rscc_sitespecific sspec ON site.sitetype_id = sspec.sitespecific_id
+LEFT JOIN rscc_cidtype ct ON om.cid_id = ct.cidtype_id
+LEFT JOIN rscc_requirementtype req ON om.requirement_id = req.requirementtype_id
+LEFT JOIN rscc_customer customer ON om.customer_account_number = customer.customer_account_number
+LEFT JOIN rscc_model model ON om.model_id = model.model_id;
 GO
 
 -- --------------------------------------------------
